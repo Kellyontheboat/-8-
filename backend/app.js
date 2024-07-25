@@ -32,7 +32,7 @@ app.get('/api/posts', async (req, res) => {
 
   // Add imgUrl to each plain message
   const messagesWithImgUrl = await Promise.all(messages.map(async (message) => {
-    message.imgUrl = await getObjectSignedUrl(message.img)
+    message.imgUrl = "https://d348uiae81km7c.cloudfront.net/"+message.img
     return message
   }))
 
