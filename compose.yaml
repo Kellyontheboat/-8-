@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+    command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "20s", "node", "app.js"]
+    env_file:
+      - .env
+    ports:
+      - "3001:3000"  # Expose port 3001 on the host
+    depends_on:
+      - db
+
+  server:
+    build:
+      context: .
+    command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "20s", "node", "backend/app.js"]
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: mysql:8.0.36
+    env_file:
+      - .env
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql 
+
+volumes:
+  db_data:
+
+

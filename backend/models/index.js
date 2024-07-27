@@ -5,26 +5,30 @@ const path = require('path')
 const Sequelize = require('sequelize')
 const process = require('process')
 const basename = path.basename(__filename)
-const env = process.env.NODE_ENV || 'development'
+
+const dotenv = require('dotenv')
+dotenv.config()
+//const env = process.env.NODE_ENV || 'development'
 const db = {}
 
 let sequelize
-if (env === 'development') {
-  sequelize = new Sequelize(process.env.DEV_DB_DATABASE, process.env.DEV_DB_USERNAME, process.env.DEV_DB_PASSWORD, {
-    host: process.env.DEV_DB_HOST,
-    dialect: 'mysql'
-  })
-} else if (env === 'test') {
-  sequelize = new Sequelize(process.env.TEST_DB_DATABASE, process.env.TEST_DB_USERNAME, process.env.TEST_DB_PASSWORD, {
-    host: process.env.TEST_DB_HOST,
-    dialect: 'mysql'
-  })
-} else {
-  sequelize = new Sequelize(process.env.PROD_DB_DATABASE, process.env.PROD_DB_USERNAME, process.env.PROD_DB_PASSWORD, {
-    host: process.env.PROD_DB_HOST,
-    dialect: 'mysql'
-  })
+
+sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
+  host: process.env.DATABASE_HOST,
+  dialect: 'mysql'
+})
+
+// Test the connection
+async function testConnection() {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
 }
+
+testConnection();
 
 fs
   .readdirSync(__dirname)

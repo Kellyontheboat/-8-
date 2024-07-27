@@ -11,20 +11,26 @@ const { uploadFile, getObjectSignedUrl } = require('./services/s3.js')
 
 const dotenv = require('dotenv')
 dotenv.config()
+console.log("CURRENT NODE_ENV:",process.env.NODE_ENV)
 
 const db = require('./models')
 const Message = db.Message
 
 const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
 
-app.use(express.static(path.join(__dirname, '../frontend/public')))
+// !file path:local
+// app.use(express.static(path.join(__dirname, '../frontend/public')))
+
+// !file path:docker
+const pathToPublic = path.join(__dirname, '../app/frontend/public');
+console.log('Path to public:', pathToPublic);
+app.use(express.static(pathToPublic));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/index.html'))
 })
 
 app.get('/api/posts', async (req, res) => {
-  // Fetch messages as Sequelize instances
   const messages = await Message.findAll({
     order: [['createdAt', 'DESC']],
     raw: true // Use raw:true to get plain js object directly

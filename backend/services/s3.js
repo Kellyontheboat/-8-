@@ -30,7 +30,7 @@ const uploadFile = async (fileName, fileContent, mimetype) => {
     return result
   } catch (error) {
     console.error('Error uploading file:', error)
-    throw error // Re-throw the error if needed
+    throw error
   }
 }
 
