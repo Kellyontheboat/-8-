@@ -1,22 +1,25 @@
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 3000
-const path = require('path')
-const multer = require('multer')
-const storage = multer.memoryStorage()
-const crypto = require('crypto')
+const express = require('express');
+const fs = require('fs');
+const https = require('https');
+const path = require('path');
+const multer = require('multer');
+const crypto = require('crypto');
+const dotenv = require('dotenv');
+const { uploadFile, getObjectSignedUrl } = require('./services/s3.js');
+const db = require('./models');
 
-const upload = multer({ storage })
-const { uploadFile, getObjectSignedUrl } = require('./services/s3.js')
+dotenv.config();
+console.log("CURRENT NODE_ENV:", process.env.NODE_ENV);
 
-const dotenv = require('dotenv')
-dotenv.config()
-console.log("CURRENT NODE_ENV:",process.env.NODE_ENV)
+const app = express();
+const port = process.env.PORT || 3000;
 
-const db = require('./models')
-const Message = db.Message
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
+const Message = db.Message;
+
+const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
 
 // !file path:local
 // app.use(express.static(path.join(__dirname, '../frontend/public')))
@@ -63,6 +66,12 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
   res.status(201).send(message)
 })
 
-app.listen(port, () => {
-  console.log(`express server is running on http://localhost:${port}`)
-})
+// HTTPS setup
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/www.good-msg.xyz/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/www.good-msg.xyz/fullchain.pem'),
+};
+
+https.createServer(options, app).listen(port, () => {
+  console.log(`Express server is running on https://localhost:${port}`);
+});
