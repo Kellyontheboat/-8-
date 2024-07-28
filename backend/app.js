@@ -21,8 +21,13 @@ const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex
 // !file path:local
 // app.use(express.static(path.join(__dirname, '../frontend/public')))
 
-// !file path:docker
-const pathToPublic = path.join(__dirname, '../app/frontend/public');
+// !file path:local docker
+// const pathToPublic = path.join(__dirname, '../app/frontend/public');
+// console.log('Path to public:', pathToPublic);
+// app.use(express.static(pathToPublic));
+
+// !file path:EC2 docker
+const pathToPublic = path.join(__dirname, '../frontend/public');
 console.log('Path to public:', pathToPublic);
 app.use(express.static(pathToPublic));
 
