@@ -9,10 +9,10 @@ const { uploadFile, getObjectSignedUrl } = require('./services/s3.js')
 const db = require('./models')
 
 dotenv.config()
-console.log('CURRENT NODE_ENV:', process.env.NODE_ENV)
+//console.log('CURRENT NODE_ENV:', process.env.NODE_ENV)
 
 const app = express()
-// const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
@@ -75,6 +75,10 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' })
   }
 })
+
+// app.listen(port, () => {
+//   console.log('express server is running')
+// })
 
 // HTTPS setup
 const options = {
