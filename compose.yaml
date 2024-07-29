@@ -39,6 +39,12 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - web
+    networks:
+      - app-network
+
+networks:
+app-network:
+  driver: bridge
 
 volumes:
   db_data:
