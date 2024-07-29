@@ -8,7 +8,7 @@ const basename = path.basename(__filename)
 
 const dotenv = require('dotenv')
 dotenv.config()
-//const env = process.env.NODE_ENV || 'development'
+// const env = process.env.NODE_ENV || 'development'
 const db = {}
 
 let sequelize
@@ -19,16 +19,16 @@ sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, 
 })
 
 // Test the connection
-async function testConnection() {
+async function testConnection () {
   try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    await sequelize.authenticate()
+    console.log('Connection has been established successfully.')
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error('Unable to connect to the database:', error)
   }
 }
 
-testConnection();
+testConnection()
 
 fs
   .readdirSync(__dirname)
