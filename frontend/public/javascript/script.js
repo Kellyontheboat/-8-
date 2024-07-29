@@ -4,24 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const captionInput = document.getElementById('captionInput')
   const messagesContainer = document.getElementById('messages-container')
 
-  async function fetchRenderPosts() {
-    const response = await fetch('api/posts');
-    const posts = await response.json();
+  async function fetchRenderPosts () {
+    const response = await fetch('api/posts')
+    const posts = await response.json()
 
     posts.forEach(post => {
-      const imgUrl = post.imgUrl;
-      const content = post.content;
-      const contentDiv = document.createElement('div');
-      const imgElement = document.createElement('img');
-      const hr = document.createElement("hr") 
-      contentDiv.innerText = content;
-      imgElement.src = imgUrl;
+      const imgUrl = post.imgUrl
+      const content = post.content
+      const contentDiv = document.createElement('div')
+      const imgElement = document.createElement('img')
+      const hr = document.createElement('hr')
+      contentDiv.innerText = content
+      imgElement.src = imgUrl
 
-      messagesContainer.appendChild(contentDiv);
-      messagesContainer.appendChild(imgElement);
-      messagesContainer.appendChild(hr);
-
-    });
+      messagesContainer.appendChild(contentDiv)
+      messagesContainer.appendChild(imgElement)
+      messagesContainer.appendChild(hr)
+    })
   }
 
   fetchRenderPosts()
@@ -48,13 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
       })
 
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        const errorResponse = await response.json()
+        alert(errorResponse.error || 'Unknown error occurred')
+        return
       }
 
       const result = await response.json()
       console.log('Success:', result)
       // Reload the page after a successful POST
-      location.reload();
+      location.reload()
     } catch (error) {
       console.error('Error:', error)
     }
