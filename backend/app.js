@@ -12,7 +12,7 @@ dotenv.config()
 //console.log('CURRENT NODE_ENV:', process.env.NODE_ENV)
 
 const app = express()
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 443;
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
