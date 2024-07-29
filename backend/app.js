@@ -86,6 +86,6 @@ const options = {
   cert: fs.readFileSync('/etc/letsencrypt/live/www.good-msg.xyz/fullchain.pem')
 }
 
-https.createServer(options, app).listen(() => {
+https.createServer(options, app).listen(port, () => {
   console.log('Express server is running')
 })
