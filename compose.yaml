@@ -39,9 +39,9 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
-      - "443:443"
+      #- "443:443"
     volumes:
-      - /home/ubuntu/stageThree/nginx.conf:/etc/nginx/nginx.conf
+      - /home/ubuntu/stageThree/minimal_nginx.conf:/etc/nginx/nginx.conf
       - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
       - web
