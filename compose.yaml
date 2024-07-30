@@ -9,7 +9,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - /etc/letsencrypt/live/www.good-msg.xyz:/etc/letsencrypt/live/www.good-msg.xyz
+      - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - app-network
 
@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     volumes:
-      - /etc/letsencrypt/live/www.good-msg.xyz:/etc/letsencrypt/live/www.good-msg.xyz
+      - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - app-network
 
@@ -42,7 +42,7 @@ services:
       - "443:443"
     volumes:
       - /home/ubuntu/stageThree/nginx.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt/live/www.good-msg.xyz:/etc/letsencrypt/live/www.good-msg.xyz
+      - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
       - web
     networks:
