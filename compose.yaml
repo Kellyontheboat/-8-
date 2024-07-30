@@ -4,37 +4,38 @@ services:
   web:
     build:
       context: .
-    command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "120s", "node", "app.js"]
+    #command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "120s", "node", "app.js"]
+    command: ["dockerize", "-wait", "tcp://database-1.cncsyck2gfd6.ap-northeast-1.rds.amazonaws.com:3306", "-timeout", "120s", "node", "backend/app.js"]
     env_file:
       - .env
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      - nginx
     networks:
       - app-network
 
   server:
     build:
       context: .
-    command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "120s", "node", "backend/app.js"]
+    command: ["dockerize", "-wait", "tcp://database-1.cncsyck2gfd6.ap-northeast-1.rds.amazonaws.com:3306", "-timeout", "120s", "node", "backend/app.js"]
     depends_on:
-      - db
+      - nginx
     env_file:
       - .env
     networks:
       - app-network
 
-  db:
-    image: mysql:8.0.36
-    env_file:
-      - .env
-    ports:
-      - "3307:3306"
-    volumes:
-      - db_data:/var/lib/mysql 
-    networks:
-      - app-network
+  # db:
+  #   image: mysql:8.0.36
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "3307:3306"
+  #   volumes:
+  #     - db_data:/var/lib/mysql 
+  #   networks:
+  #     - app-network
 
   nginx:
     image: nginx:latest
