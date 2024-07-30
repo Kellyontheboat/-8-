@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: .
-    command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "20s", "node", "app.js"]
+    command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "120s", "node", "app.js"]
     env_file:
       - .env
     ports:
@@ -17,7 +17,7 @@ services:
   server:
     build:
       context: .
-    command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "20s", "node", "backend/app.js"]
+    command: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "120s", "node", "backend/app.js"]
     depends_on:
       - db
     env_file:
