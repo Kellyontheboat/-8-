@@ -1,6 +1,7 @@
 const express = require('express')
 const fs = require('fs')
-const https = require('https')
+//const https = require('https')
+const http = require('http')
 const path = require('path')
 const multer = require('multer')
 const crypto = require('crypto')
@@ -12,7 +13,7 @@ dotenv.config()
 //console.log('CURRENT NODE_ENV:', process.env.NODE_ENV)
 
 const app = express()
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
@@ -80,16 +81,18 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
 //   console.log('express server is running')
 // })
 
-// HTTPS setup
-const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/www.good-msg.xyz/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/www.good-msg.xyz/fullchain.pem')
-}
+// HTTPS setup 
+// const options = {
+//   key: fs.readFileSync('/etc/letsencrypt/live/www.good-msg.xyz/privkey.pem'),
+//   cert: fs.readFileSync('/etc/letsencrypt/live/www.good-msg.xyz/fullchain.pem')
+// }
 
-const server = https.createServer(options, app)
+// const server = https.createServer(options, app)
+
+const server = http.createServer(app)
 
 server.keepAliveTimeout = 700000
 
 server.listen(port, () => {
-  console.log('Express server is running')
+  console.log('Express server is running HTTP')
 })
